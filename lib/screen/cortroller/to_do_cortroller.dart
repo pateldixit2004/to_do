@@ -11,4 +11,13 @@ class ToDoController extends GetxController
   ].obs;
 
 
+  List prolityList=['Arrugent','High','Medium','Low'];
+  String? selectProlity;
+
+  DateTime data= DateTime.now();
+  void changeDate(DateTime pickData)
+  {
+    data= pickData;
+    update();
+  }
 }

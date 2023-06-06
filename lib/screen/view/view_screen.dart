@@ -20,13 +20,12 @@ class _viewScreenState extends State<viewScreen> {
   @override
   void initState() {
     m1 = Get.arguments;
-    if (m1['status']=='0')
-      {
-        DoModel d1=m1['data'];
-        txttitle=TextEditingController(text: d1.title);
-        txtnote=TextEditingController(text: d1.note);
-        txtpro=TextEditingController(text: d1.priolity);
-      }
+    if (m1['status'] == '0') {
+      DoModel d1 = m1['data'];
+      txttitle = TextEditingController(text: d1.title);
+      txtnote = TextEditingController(text: d1.note);
+      txtpro = TextEditingController(text: d1.priolity);
+    }
     super.initState();
   }
 
@@ -34,8 +33,57 @@ class _viewScreenState extends State<viewScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  DateTime? picker = await showDatePicker(
+                      context: context,
+                      initialDate: controller!.data,
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2040));
+                  controller!.changeDate(picker!);
+                },
+                icon: Icon(Icons.data_array))
+          ],
+        ),
         body: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Select Date'),
+                IconButton(
+                    onPressed: () async {
+                      DateTime? picker = await showDatePicker(
+                          context: context,
+                          initialDate: controller!.data,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2040));
+                      controller!.changeDate(picker!);
+                    },
+                    icon: Icon(Icons.date_range)),
+                Text(
+                    "${controller!.data.day}-${controller!.data.month}-${controller!.data.year}"),
+              ],
+            ),
+            DropdownButton(
+                items: controller!.prolityList
+                    .map((e) => DropdownMenuItem(
+                          child: Center(
+                            child: Text("$e"),
+                          ),
+                          value: e,
+                        ))
+                    .toList(),
+                hint: Text('hyyy'),
+                onChanged: (value) {
+                  controller!.selectProlity= value as String?;
+                },
+                value: controller!.selectProlity,
+                isExpanded: true,
+
+            ),
             TextField(
               controller: txtpro,
             ),
