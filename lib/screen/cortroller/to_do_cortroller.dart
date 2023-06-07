@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:to_do/screen/model/to.dart';
+import 'package:intl/intl.dart';
 
 class ToDoController extends GetxController
 {
@@ -11,13 +12,15 @@ class ToDoController extends GetxController
   ].obs;
 
 
-  List prolityList=['Arrugent','High','Medium','Low'];
-  String? selectProlity;
+  List priorityList=['urgent','High','Medium','Low'];
+  RxString selectPriority="urgent".obs;
 
-  DateTime data= DateTime.now();
-  void changeDate(DateTime pickData)
+  RxString dateTime = "${DateTime.now()}".obs;
+
+  String setDateFormat(DateTime dm)
   {
-    data= pickData;
-    update();
+    var f = DateFormat("dd-MM-yyyy");
+    return f.format(dm);
   }
+
 }

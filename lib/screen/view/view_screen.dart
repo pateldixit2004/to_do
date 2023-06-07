@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/screen/cortroller/to_do_cortroller.dart';
@@ -19,7 +21,12 @@ class _viewScreenState extends State<viewScreen> {
 
   @override
   void initState() {
+
     m1 = Get.arguments;
+
+
+    controller.dateTime.value = controller.setDateFormat(DateTime.now());
+
     if (m1['status'] == '0') {
       DoModel d1 = m1['data'];
       txttitle = TextEditingController(text: d1.title);
@@ -35,16 +42,6 @@ class _viewScreenState extends State<viewScreen> {
       child: Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(
-                onPressed: () async {
-                  DateTime? picker = await showDatePicker(
-                      context: context,
-                      initialDate: controller!.data,
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2040));
-                  controller!.changeDate(picker!);
-                },
-                icon: Icon(Icons.data_array))
           ],
         ),
         body: Column(
@@ -57,32 +54,37 @@ class _viewScreenState extends State<viewScreen> {
                     onPressed: () async {
                       DateTime? picker = await showDatePicker(
                           context: context,
-                          initialDate: controller!.data,
+                          initialDate: DateTime.now(),
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2040));
-                      controller!.changeDate(picker!);
+
+                      controller.dateTime.value = controller.setDateFormat(picker!);
                     },
                     icon: Icon(Icons.date_range)),
-                Text(
-                    "${controller!.data.day}-${controller!.data.month}-${controller!.data.year}"),
+                Obx(
+                  () =>  Text(
+                      "${controller.dateTime}"),
+                ),
               ],
             ),
-            DropdownButton(
-                items: controller!.prolityList
-                    .map((e) => DropdownMenuItem(
-                          child: Center(
-                            child: Text("$e"),
-                          ),
-                          value: e,
-                        ))
-                    .toList(),
-                hint: Text('hyyy'),
-                onChanged: (value) {
-                  controller!.selectProlity= value as String?;
-                },
-                value: controller!.selectProlity,
-                isExpanded: true,
+            Obx(
+              () =>  DropdownButton(
+                  items: controller.priorityList
+                      .map((e) => DropdownMenuItem(
+                            child: Center(
+                              child: Text("$e"),
+                            ),
+                            value: e,
+                          ))
+                      .toList(),
+                  hint: Text('hyyy'),
+                  onChanged: (value) {
+                    controller.selectPriority.value = value as String ;
+                  },
+                  value: controller.selectPriority.value,
+                  isExpanded: true,
 
+              ),
             ),
             TextField(
               controller: txtpro,
