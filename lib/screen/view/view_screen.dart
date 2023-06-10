@@ -149,7 +149,9 @@ class _viewScreenState extends State<viewScreen> {
                  controller.dateTime.value = controller.setDateFormat(picker!);
                }, child: Obx(() =>  Text('${controller.dateTime}'))),
              ),
-//data
+
+              /*data*/
+
               // Obx(
               //   () => TextField(
               //     controller: txtdate,
